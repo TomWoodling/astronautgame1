@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://cnfsn7fk1feu2"]
+
+[ext_resource type="Script" path="res://scripts/test_level.gd" id="1_pe6j0"]
+[ext_resource type="Texture2D" uid="uid://vvh486jmt6ls" path="res://assets/textures/moon_tile_2.png" id="2_hppoj"]
+[ext_resource type="PackedScene" uid="uid://d2bnjwmqvrd2f" path="res://scenes/player.tscn" id="3_di8e6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sybjv"]
+albedo_texture = ExtResource("2_hppoj")
+uv1_scale = Vector3(25, 25, 25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_va23n"]
+material = SubResource("StandardMaterial3D_sybjv")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r0qsk"]
+size = Vector3(100, 0.1, 100)
+
+[node name="test_level" type="Node3D"]
+script = ExtResource("1_pe6j0")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(100, 0, 0, 0, 0.1, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("BoxMesh_va23n")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_r0qsk")
+
+[node name="player" parent="." instance=ExtResource("3_di8e6")]
