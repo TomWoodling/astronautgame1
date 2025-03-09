@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://yue8ahui3n7f"]
+
+[ext_resource type="Script" path="res://scripts/test_first_flight.gd" id="1_xnp63"]
+
+[node name="test_first_flight" type="Node"]
+script = ExtResource("1_xnp63")

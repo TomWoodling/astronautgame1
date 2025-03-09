@@ -1,5 +1,7 @@
 extends Node
 
+var dialogue_system: Node
+
 signal game_state_changed(new_state, old_state)
 signal interaction_started(interaction_data)
 signal interaction_ended(interaction_data)
@@ -23,6 +25,8 @@ var current_interaction_target: Node
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	dialogue_system = preload("res://scripts/dialogue_system.gd").new()
+	add_child(dialogue_system)
 
 func register_player(p_node: Node3D) -> void:
 	player = p_node
@@ -34,6 +38,9 @@ func start_interaction(target: Node, interaction_type: String, data: Dictionary 
 	if current_state != GameState.PLAYING:
 		return
 		
+	match type:
+		"dialogue":
+			dialogue_system.start_dialogue(data)
 	current_interaction_target = target
 	current_state = GameState.DIALOGUE if interaction_type == "dialogue" else GameState.CUTSCENE
 	interaction_started.emit({
