@@ -18,6 +18,10 @@ extends CharacterBody3D
 @export var air_control: float = 0.6  # Increased for better air steering
 @export var air_brake: float = 0.15  # How much you can slow down in air
 @export var landing_cushion: float = 2.0
+@export var jump_strength: float = 8.0  # Adjust this to control overall jump height
+@export var jump_time: float = 0.0
+@export var is_jumping: bool = false
+const JUMP_DURATION: float = 0.6  # Total time for jump cycle
 
 # Node references
 @onready var camera_rig: Node3D = $CameraRig
@@ -33,6 +37,8 @@ var landing_velocity: float = 0.0
 var current_speed: float = 0.0  # Track actual speed for smooth transitions
 
 func _ready() -> void:
+	GameManager.register_player(self)
+		
 	assert(camera_rig != null, "Camera rig node not found!")
 	assert(mesh != null, "Mesh node not found!")
 	
@@ -43,6 +49,9 @@ func _on_camera_rotated(new_basis: Basis) -> void:
 	camera_basis = new_basis
 
 func _physics_process(delta: float) -> void:
+	if not GameManager.can_player_move():
+		return
+		
 	var on_floor = is_on_floor()
 	
 	if was_in_air and on_floor:
