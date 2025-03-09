@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccgynfvewc7vy"]
+
+[ext_resource type="PackedScene" uid="uid://75rmqeo3q87v" path="res://assets/models/asstronaut/asstronaut.blend" id="1_2ot7d"]
+[ext_resource type="Script" path="res://scripts/interaction_zone.gd" id="2_7364n"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7un7a"]
+size = Vector3(1, 0.968018, 1.6748)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pbsga"]
+radius = 0.221259
+height = 1.04699
+
+[node name="DefaultNPC" type="CharacterBody3D"]
+
+[node name="asstronaut" parent="." instance=ExtResource("1_2ot7d")]
+
+[node name="Skeleton3D" parent="asstronaut/Armature" index="0"]
+bones/0/position = Vector3(-0.833027, 0.700954, -41.9506)
+bones/0/rotation = Quaternion(-0.525415, -0.489478, 0.491698, 0.492528)
+bones/1/rotation = Quaternion(0.00956982, -0.00203178, -0.0494888, 0.998727)
+bones/2/rotation = Quaternion(0.00450555, -0.00346874, -0.0364648, 0.999319)
+bones/3/rotation = Quaternion(0.00437927, -0.00362207, -0.0364604, 0.999319)
+bones/4/rotation = Quaternion(0.0198131, -0.00234136, 0.172535, 0.984801)
+bones/5/rotation = Quaternion(-0.000757599, 0.014509, -0.0130099, 0.99981)
+bones/6/rotation = Quaternion(-8.94943e-10, -5.96047e-08, -1.26348e-09, 1)
+bones/7/rotation = Quaternion(0.00432748, 0.664254, -0.747479, -0.00480009)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/position = Vector3(2.27861e-06, 8.73763, 1.91116e-07)
+bones/8/rotation = Quaternion(0.616305, -0.404693, 0.0527212, 0.673507)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/rotation = Quaternion(0.106722, -0.00132748, 0.0573718, 0.992631)
+bones/9/scale = Vector3(1, 1, 1)
+bones/11/rotation = Quaternion(0.741894, -0.0293559, 0.0316761, 0.669125)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/position = Vector3(-1.55785e-06, 8.73763, -8.83824e-06)
+bones/12/rotation = Quaternion(0.244091, -0.606617, -0.552042, 0.517383)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/rotation = Quaternion(-0.0621159, 0.00134227, 0.0333675, 0.99751)
+bones/13/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(0.0811603, -0.0758343, 0.992758, -0.0457582)
+bones/15/scale = Vector3(1, 1, 1.00003)
+bones/16/rotation = Quaternion(-0.0114122, -0.0298325, -0.535222, 0.844107)
+bones/17/rotation = Quaternion(0.181926, -0.638232, 0.332254, 0.670202)
+bones/18/rotation = Quaternion(0.605309, -0.213357, -0.0324734, 0.766176)
+bones/20/rotation = Quaternion(-0.0367597, -0.0314145, 0.956011, -0.289318)
+bones/20/scale = Vector3(1, 0.999999, 1.00003)
+bones/21/rotation = Quaternion(0.0251717, 0.0838993, -0.401491, 0.911664)
+bones/22/rotation = Quaternion(0.413393, -0.52112, 0.252794, 0.702592)
+bones/23/rotation = Quaternion(0.371331, 0.0730661, -0.0293247, 0.925157)
+bones/23/scale = Vector3(1, 1, 1)
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="InteractionZone" type="Area3D" parent="Node3D"]
+script = ExtResource("2_7364n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/InteractionZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553101, 0.337402)
+shape = SubResource("BoxShape3D_7un7a")
+
+[node name="npcShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.443839, 0)
+shape = SubResource("CapsuleShape3D_pbsga")
+
+[editable path="asstronaut"]
