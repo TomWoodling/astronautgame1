@@ -53,3 +53,6 @@ func _process(_delta: float) -> void:
 		icon.rotation += PI/2
 	else:
 		icon.rotation = 0
+
+func update_label(new_label: String) -> void:
+	label.text = new_label

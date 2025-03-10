@@ -3,6 +3,7 @@ extends Node
 signal game_state_changed(new_state: String)
 signal interaction_started(zone: InteractionZone)
 signal interaction_ended
+signal player_ready(player: Node3D)  # New signal
 
 enum GameState {LOADING, PLAYING, DIALOGUE, PAUSED}
 var current_state: GameState = GameState.LOADING
@@ -32,6 +33,10 @@ func _on_dialogue_ended() -> void:
 
 # Running tests
 func start_test(test_id: String) -> void:
+	if not player:
+		push_error("Cannot start test: Player not registered")
+		return
+		
 	if test_controller:
 		test_controller.queue_free()
 	
@@ -50,3 +55,8 @@ func _on_test_completed() -> void:
 	
 func _on_test_failed(reason: String) -> void:
 	push_error("Test failed: " + reason)
+
+func register_player(p_node: Node3D) -> void:
+	player = p_node
+	player_ready.emit(player)
+	current_state = GameState.PLAYING
