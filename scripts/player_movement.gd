@@ -39,7 +39,6 @@ var is_jumping: bool = false
 var can_jump: bool = true
 
 func _ready() -> void:
-	GameManager.register_player(self)
 	assert(camera_rig != null, "Camera rig node not found!")
 	assert(mesh != null, "Mesh node not found!")
 	

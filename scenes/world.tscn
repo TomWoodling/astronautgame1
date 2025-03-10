@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccf2svooax62g"]
+[gd_scene load_steps=6 format=3 uid="uid://ccf2svooax62g"]
 
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_1djqn"]
 [ext_resource type="PackedScene" uid="uid://cljdntlhmpbed" path="res://scenes/world_generator.tscn" id="1_uy2gm"]
 [ext_resource type="Environment" uid="uid://dgagd6hrva8tm" path="res://assets/mats/generic_level.tres" id="2_4g8kc"]
 [ext_resource type="PackedScene" uid="uid://bbhkdvvm4bgfg" path="res://scenes/ui/hud.tscn" id="3_o6ccj"]
 [ext_resource type="PackedScene" uid="uid://d2bnjwmqvrd2f" path="res://scenes/player.tscn" id="4_rfup5"]
 
 [node name="world" type="Node3D"]
+script = ExtResource("1_1djqn")
 
 [node name="world_generator" parent="." instance=ExtResource("1_uy2gm")]
 

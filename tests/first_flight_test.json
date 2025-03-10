@@ -2,6 +2,7 @@
 	"test_id": "first_flight",
 	"description": "Initial tutorial and achievement test",
 	"duration": 60,
+	"completion_achievement": "first_flight",
 	"initial_setup": {
 		"player_position": {"x": 10, "y": 5, "z": 10},
 		"welcome_message": {

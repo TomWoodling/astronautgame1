@@ -1,15 +1,18 @@
 extends CanvasLayer
 
+func _ready() -> void:
+	GameManager.test_completed.connect(_on_test_completed)
+	GameManager.test_failed.connect(_on_test_failed)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _on_button_pressed() -> void:
+	if GameManager.start_test("first_flight"):
+		hide()
+	else:
+		HUDManager.show_message("Failed to start test", "ALERT")
 
+func _on_test_completed() -> void:
+	show()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func _on_button_pressed():
-	GameManager.start_test("first_flight")
+func _on_test_failed(reason: String) -> void:
+	HUDManager.show_message("Test failed: " + reason, "ALERT")
+	show()
