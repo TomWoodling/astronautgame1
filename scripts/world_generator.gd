@@ -220,10 +220,16 @@ func create_platform(type: String, position: Vector3) -> Node3D:
 	var interaction_shape = interaction_collision.shape as BoxShape3D
 	interaction_shape.size = Vector3(config.size.x, config.size.y + 0.5, config.size.z)
 	interaction_collision.position.y = config.size.y + 0.25
-	# Add POI for NPC platforms
-	if type == "npc":
-		var poi_texture = preload("res://assets/icons/npc_icon.png")
-		HUDManager.add_poi(platform, "npc", poi_texture, 1)
+	# Add POI based on platform type
+	match type:
+		"npc":
+			HUDManager.add_poi(platform, "npc", POIIcons.get_icon("npc"))
+		"hazard":
+			HUDManager.add_poi(platform, "hazard", POIIcons.get_icon("hazard"))
+		# Achievement POIs are typically added when an achievement is available/nearby
+		"collection", "challenge":
+			if not AchievementManager.has_achievement(config.interaction_data.get("achievement_id", "")):
+				HUDManager.add_poi(platform, "achievement", POIIcons.get_icon("achievement"))
 	
 	platform.position = position
 	return platform
@@ -315,3 +321,10 @@ func _exit_tree() -> void:
 		if is_instance_valid(chunk):
 			chunk.queue_free()
 	generated_chunks.clear()
+
+func create_test_platform(position: Vector3, type: String, interaction_data: Dictionary) -> void:
+	var platform = create_platform(type, position)
+	if platform:
+		var interaction_zone = platform.get_node("InteractionZone")
+		if interaction_zone:
+			interaction_zone.interaction_data = interaction_data

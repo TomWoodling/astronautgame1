@@ -1,0 +1,29 @@
+{
+	"test_id": "first_flight",
+	"description": "Initial tutorial and achievement test",
+	"duration": 60,
+	"initial_setup": {
+		"player_position": {"x": 10, "y": 5, "z": 10},
+		"welcome_message": {
+			"text": "Welcome to Lunar Training Facility",
+			"type": "INFO",
+			"delay": 0.5
+		}
+	},
+	"tutorial_platform": {
+		"position": {"x": 20, "y": 0, "z": 20},
+		"type": "npc",
+		"interaction_data": {
+			"dialogue_id": "tutorial_first_flight",
+			"dialogues": [
+				"Welcome rookie! Ready for your first lunar mission?",
+				"Use WASD to move and SPACE to activate your thrusters.",
+				"Complete this training to earn your First Flight badge!"
+			],
+			"on_complete": {
+				"achievement": "first_flight",
+				"message": "First Flight Achievement Unlocked!"
+			}
+		}
+	}
+}

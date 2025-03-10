@@ -13,20 +13,16 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 
 func _on_body_entered(body: Node3D) -> void:
-	if body != GameManager.player:
-		return
-		
-	if one_shot and has_interacted:
+	if body != GameManager.player or (one_shot and has_interacted):
 		return
 		
 	if auto_interact:
 		trigger_interaction()
 	else:
-		HUDManager.show_message("Press E to interact", "INFO")
+		HUDManager.show_message("Press E to interact")
 
-func _on_body_exited(body: Node3D) -> void:
-	if body != GameManager.player:
-		return
+func _on_body_exited(_body: Node3D) -> void:
+	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact"):
@@ -36,4 +32,4 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func trigger_interaction() -> void:
 	has_interacted = true
-	GameManager.start_interaction(self, interaction_type, interaction_data)
+	GameManager.start_interaction(self)

@@ -1,58 +1,52 @@
 extends Node
 
-var dialogue_system: Node
+signal game_state_changed(new_state: String)
+signal interaction_started(zone: InteractionZone)
+signal interaction_ended
 
-signal game_state_changed(new_state, old_state)
-signal interaction_started(interaction_data)
-signal interaction_ended(interaction_data)
-
-enum GameState {
-	PLAYING,
-	DIALOGUE,
-	CUTSCENE,
-	PAUSED,
-	MENU
-}
-
-var current_state: GameState = GameState.PLAYING:
-	set(value):
-		var old_state = current_state
-		current_state = value
-		game_state_changed.emit(current_state, old_state)
-
+enum GameState {LOADING, PLAYING, DIALOGUE, PAUSED}
+var current_state: GameState = GameState.LOADING
 var player: Node3D
-var current_interaction_target: Node
+var test_controller: Node
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	dialogue_system = preload("res://scripts/dialogue_system.gd").new()
-	add_child(dialogue_system)
+	current_state = GameState.PLAYING
 
-func register_player(p_node: Node3D) -> void:
-	player = p_node
-
-func can_player_move() -> bool:
-	return current_state == GameState.PLAYING
-
-func start_interaction(target: Node, interaction_type: String, data: Dictionary = {}) -> void:
+func start_interaction(zone: InteractionZone) -> void:
 	if current_state != GameState.PLAYING:
 		return
 		
-	match type:
+	interaction_started.emit(zone)
+	match zone.interaction_type:
 		"dialogue":
-			dialogue_system.start_dialogue(data)
-	current_interaction_target = target
-	current_state = GameState.DIALOGUE if interaction_type == "dialogue" else GameState.CUTSCENE
-	interaction_started.emit({
-		"target": target,
-		"type": interaction_type,
-		"data": data
-	})
+			current_state = GameState.DIALOGUE
+			DialogueSystem.start_dialogue(zone.interaction_data)
 
 func end_interaction() -> void:
-	var previous_target = current_interaction_target
-	current_interaction_target = null
 	current_state = GameState.PLAYING
-	interaction_ended.emit({
-		"target": previous_target
-	})
+	interaction_ended.emit()
+
+func _on_dialogue_ended() -> void:
+	if current_state == GameState.DIALOGUE:
+		end_interaction()
+
+# Running tests
+func start_test(test_id: String) -> void:
+	if test_controller:
+		test_controller.queue_free()
+	
+	test_controller = preload("res://scripts/test_controller.gd").new()
+	add_child(test_controller)
+	
+	if test_controller.load_test(test_id):
+		test_controller.test_completed.connect(_on_test_completed)
+		test_controller.test_failed.connect(_on_test_failed)
+		test_controller.start_test()
+	else:
+		push_error("Failed to load test: " + test_id)
+
+func _on_test_completed() -> void:
+	print("Test completed successfully!")
+	
+func _on_test_failed(reason: String) -> void:
+	push_error("Test failed: " + reason)

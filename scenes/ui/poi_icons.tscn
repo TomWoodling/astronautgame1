@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmmd0p45x7vm7"]
+
+[ext_resource type="Script" path="res://scripts/poi_icons.gd" id="1_dunuu"]
+
+[node name="poi_icons" type="Node"]
+script = ExtResource("1_dunuu")
